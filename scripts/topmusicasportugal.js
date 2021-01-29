@@ -9,13 +9,55 @@ function getTopMusicasPortugal() {
         url: API_URL + '/2.0/?method=geo.gettoptracks&country=portugal&api_key=' + API_KEY + '&format=json'
     }).done(function (resultados) {
         topMusicasPortugal = resultados.tracks.track;
-        showTopMusicasPortugal();
+        verificaFavoritos();
+        inicializarTopMusicasPortugal();
     });
 }
 
-function showTopMusicasPortugal() {
+function verificaFavoritos() {
+    for (var i = 0; i < topMusicasPortugal.length - 1; i++){
+        var favorito = localStorage.getItem(topMusicasPortugal[i].mbid);
+        if (favorito == null){
+            topMusicasPortugal[i].favorito = false;
+        } else {
+            topMusicasPortugal[i].favorito = true;
+        }
+    }
+}
+
+function adicionarFavorito(i) {
+    var id = topMusicasPortugal[i].mbid;
+    localStorage.setItem(id, id);
+    topMusicasPortugal[i].favorito = true;
+    refreshFavorito(i);
+}
+
+function removerFavorito(i) {
+    var id = topMusicasPortugal[i].mbid;
+    localStorage.removeItem(id);
+    topMusicasPortugal[i].favorito = false;
+    refreshFavorito(i);
+}
+
+function refreshFavorito(i) {
+    var icon;
+    if (topMusicasPortugal[i].favorito){
+        icon = "<i onclick='removerFavorito("+ i +")' class=\"fas fa-star\"></i>";
+    } else {
+        icon = "<i onclick='adicionarFavorito("+ i +")' class=\"far fa-star\"></i>";
+    }
+    $("#" + topMusicasPortugal[i].mbid).html(icon);
+}
+
+function inicializarTopMusicasPortugal() {
     $("#topMusicasPortugalList").ready(function(){
-        for (var i = 0; i < topMusicasPortugal.length; i++) {
+        for (var i = 0; i < topMusicasPortugal.length - 1; i++) {
+            var icon;
+            if (topMusicasPortugal[i].favorito){
+                icon = "<i onclick='removerFavorito(" + i +")' class=\"fas fa-star\"></i>";
+            } else {
+                icon = "<i onclick='adicionarFavorito(" + i +")' class=\"far fa-star\"></i>";
+            }
             var musica =
                 "<div class='card' >" +
                     "<img class='card-img-top' src=" + topMusicasPortugal[i].image[0]['#text'] + ">" +
@@ -28,13 +70,16 @@ function showTopMusicasPortugal() {
                         //album
                         "</div>" +
                     "</div>" +
-                    "<a href='../html/detalhes.html' onclick='saveMbid(" + i + ")' class='btn btn-primary stretched-link add-fav'>Ver Detalhes</a>"
-                "</div>"
-            $("#topMusicasPortugalList").append(musica)
+                    "<a href='../html/detalhes.html' onclick='saveMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                    "<div id=" + topMusicasPortugal[i].mbid + ">" +
+                        icon +
+                    "</div>" +
+                "</div>";
+            $("#topMusicasPortugalList").append(musica);
         }
     });
 }
 
 function saveMbid(i) {
-    sessionStorage.setItem("mbid", topMusicasPortugal[i].mbid);
+    localStorage.setItem("mbid", topMusicasPortugal[i].mbid);
 }

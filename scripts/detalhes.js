@@ -8,7 +8,7 @@ var detalhesArtista;
 
 function getDetalhesMusica() {
     $.ajax({
-        url: API_URL + '/2.0/?method=track.getInfo&api_key=' + API_KEY + '&mbid=' + sessionStorage.getItem("mbid") + '&format=json'
+        url: API_URL + '/2.0/?method=track.getInfo&api_key=' + API_KEY + '&mbid=' + localStorage.getItem("mbid") + '&format=json'
     }).done(function (resultados) {
         detalhesMusica = resultados;
         getDetalhesAlbum();
