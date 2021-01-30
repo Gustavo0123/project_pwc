@@ -3,9 +3,11 @@
 var musicasFavoritos = [];
 var novaMusica;
 
-function removerFavorito(key) {
-    window.localStorage.removeItem(key);
+function removerFavorito(i) {
+    localStorage.removeItem(i);
+    refreshFavorito(i);
 }
+
 
 function inicializarFavoritos() {
     var listLocalStorage = getLocalStorage();
@@ -29,7 +31,10 @@ function showFavoritos() {
                 //album
                 "</div>" +
                 "</div>" +
-                "<a href='../html/detalhes.html' onclick='saveMbid(" + i + ")' class='btn btn-primary stretched-link add-fav'>Ver Detalhes</a>" +
+                "<a href='../html/detalhes.html' onclick='saveMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                "<div id=" + musicasFavoritos[i].mbid + ">" +
+                icon +
+                "</div>" +
             "</div>";
             $("#favoritosList").append(musica);
         }

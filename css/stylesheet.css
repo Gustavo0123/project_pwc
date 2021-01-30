@@ -1,10 +1,24 @@
 /*homepage*/
-.card-columns{
-    width: 100%;
+.boxPesquisa {
+    margin: 20px;
+}
+#pesquisa {
+    margin: 0px;
+    width: 400px;
+    display: inline-block;
 }
 
-.card{
-    width: 40%;
+.panel-default {
+    margin: 20px;
+}
+
+.media-left {
+    width: 100px;
+    float: left;
+}
+
+.thumbnail {
+    border: none;
 }
 
 
