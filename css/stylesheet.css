@@ -1,16 +1,13 @@
 /*homepage*/
-.titulo{
-    text-align: center;
+.card-columns{
+    width: 100%;
 }
 
-.imagem-container{
-    width: 100%;
-    position: relative;
+.card{
+    width: 40%;
 }
-.filmes-detalhes {
-    width: 200px;
-    display: inline-block;
-}
+
+
 /*detalhes*/
 
 

@@ -59,8 +59,8 @@ function inicializarTopMusicasPortugal() {
                 icon = "<i onclick='adicionarFavorito(" + i +")' class=\"far fa-star\"></i>";
             }
             var musica =
-                "<div class='card' >" +
-                    "<img class='card-img-top' src=" + topMusicasPortugal[i].image[0]['#text'] + ">" +
+                "<div class='card'>" +
+                    //"<img class='card-img-top' src=" + topMusicasPortugal[i].image[0]['#text'] + ">" +
                     "<div class='card-body'>" +
                         "<h5 class='card-title'>Nome: " + topMusicasPortugal[i].name + "</h5>" +
                         "<div class='card-text'>" +
