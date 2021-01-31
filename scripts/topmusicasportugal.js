@@ -15,7 +15,7 @@ function getTopMusicasPortugal() {
 }
 
 function verificaFavoritos() {
-    for (var i = 0; i < topMusicasPortugal.length - 1; i++){
+    for (var i = 0; i < topMusicasPortugal.length; i++){
         var favorito = localStorage.getItem(topMusicasPortugal[i].mbid);
         if (favorito == null){
             topMusicasPortugal[i].favorito = false;
@@ -27,6 +27,7 @@ function verificaFavoritos() {
 
 function adicionarFavorito(i) {
     var id = topMusicasPortugal[i].mbid;
+    console.log("cannabis" + id);
     localStorage.setItem(id, id);
     topMusicasPortugal[i].favorito = true;
     refreshFavorito(i);
@@ -51,7 +52,7 @@ function refreshFavorito(i) {
 
 function inicializarTopMusicasPortugal() {
     $("#topMusicasPortugalList").ready(function(){
-        for (var i = 0; i < topMusicasPortugal.length - 1; i++) {
+        for (var i = 0; i < topMusicasPortugal.length; i++) {
             var icon;
             if (topMusicasPortugal[i].favorito){
                 icon = "<i onclick='removerFavorito(" + i +")' class=\"fas fa-star\"></i>";
