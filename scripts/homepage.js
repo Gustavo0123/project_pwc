@@ -5,6 +5,8 @@ const API_URL = "http://ws.audioscrobbler.com";
 
 var listaTopMusicasPortugal = [];
 var listaMusicasEscolhidas = [];
+var listaMusicasPesquisa = [];
+var mostrarMusicasPesquisa = false;
 
 function inicializarHomepage() {
     getTopMusicasPortugal();
@@ -23,6 +25,7 @@ function getTopMusicasPortugal() {
         url: API_URL + '/2.0/?method=geo.gettoptracks&country=portugal&api_key=' + API_KEY + '&format=json&limit=5'
     }).done(function (resultados) {
         listaTopMusicasPortugal = resultados.tracks.track;
+        verificaFavoritos();
         showTopMusicasPortugal();
     });
 }
@@ -36,36 +39,227 @@ function getTrack(key) {
     });
 }
 
+function verificaFavoritos() {
+    for (var i = 0; i < listaTopMusicasPortugal.length; i++){
+        var favorito = localStorage.getItem(listaTopMusicasPortugal[i].mbid);
+        if (favorito == null){
+            listaTopMusicasPortugal[i].favorito = false;
+        } else {
+            listaTopMusicasPortugal[i].favorito = true;
+        }
+    }
+}
+
+function adicionarFavoritoTopMusicasPortugal(i) {
+    var id = listaTopMusicasPortugal[i].mbid;
+    localStorage.setItem(id, id);
+    listaTopMusicasPortugal[i].favorito = true;
+    refreshFavoritoTopMusicasPortugal(i);
+}
+
+function removerFavoritoTopMusicasPortugal(i) {
+    var id = listaTopMusicasPortugal[i].mbid;
+    localStorage.removeItem(id);
+    listaTopMusicasPortugal[i].favorito = false;
+    refreshFavoritoTopMusicasPortugal(i);
+}
+
+function refreshFavoritoTopMusicasPortugal(i) {
+    var icon;
+    if (listaTopMusicasPortugal[i].favorito){
+        icon = "<i onclick='removerFavoritoTopMusicasPortugal("+ i +")' class=\"fas fa-star\"></i>";
+    } else {
+        icon = "<i onclick='adicionarFavoritoTopMusicasPortugal("+ i +")' class=\"far fa-star\"></i>";
+    }
+    $("#" + listaTopMusicasPortugal[i].mbid).html(icon);
+}
+
 function showTopMusicasPortugal() {
     $("#topMusicasPortugalList").ready(function(){
         var musica = '';
         for (var i = 0; i < listaTopMusicasPortugal.length; i++) {
+            var icon;
+            if (listaTopMusicasPortugal[i].favorito){
+                icon = "<i onclick='removerFavoritoTopMusicasPortugal(" + i +")' class=\"fas fa-star\"></i>";
+            } else {
+                icon = "<i onclick='adicionarFavoritoTopMusicasPortugal(" + i +")' class=\"far fa-star\"></i>";
+            }
             musica +=
-                "<li class='list-group-item'>Nome: " + listaTopMusicasPortugal[i].name + "</li>" +
-                "<a href='../html/detalhes.html' onclick='saveTopMusicasPortugalMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>"
+                "<div class='card'>" +
+                //"<img class='card-img-top' src=" + topMusicasPortugal[i].image[0]['#text'] + ">" +
+                "<div class='card-body'>" +
+                "<h5 class='card-title'>Nome: " + listaTopMusicasPortugal[i].name + "</h5>" +
+                "<div class='card-text'>" +
+                "Artista: " + listaTopMusicasPortugal[i].artist.name +
+                "</div>" +
+                "<div>" +
+                //album
+                "</div>" +
+                "</div>" +
+                "<a href='../html/detalhes.html' onclick='saveTopMusicasPortugalMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                "<div id=" + listaTopMusicasPortugal[i].mbid + ">" +
+                icon +
+                "</div>" +
+                "</div>";
         }
-        $("#topMusicasPortugalList").html("<h5>Top musicas portugal</h5><ul class='list-group'>" + musica + "</ul>");
+        $("#topMusicasPortugalList").html("<h5>Top musicas portugal</h5>" + musica);
     });
+}
+
+function adicionarFavoritoMusicasEscolhidas(i) {
+    var id = listaMusicasEscolhidas[i].track.mbid;
+    localStorage.setItem(id, id);
+    listaMusicasEscolhidas[i].favorito = true;
+    refreshFavoritoMusicasEscolhidas(i);
+}
+
+function removerFavoritoMusicasEscolhidas(i) {
+    var id = listaMusicasEscolhidas[i].track.mbid;
+    localStorage.removeItem(id);
+    listaMusicasEscolhidas[i].favorito = false;
+    refreshFavoritoMusicasEscolhidas(i);
+}
+
+function refreshFavoritoMusicasEscolhidas(i) {
+    var icon;
+    if (listaMusicasEscolhidas[i].favorito){
+        icon = "<i onclick='removerFavoritoMusicasEscolhidas("+ i +")' class=\"fas fa-star\"></i>";
+    } else {
+        icon = "<i onclick='adicionarFavoritoMusicasEscolhidas("+ i +")' class=\"far fa-star\"></i>";
+    }
+    $("#" + listaMusicasEscolhidas[i].track.mbid).html(icon);
 }
 
 function showMusicasEscolhidas() {
     $("#musicasEscolhaList").ready(function(){
         var musica = '';
         for (var i = 0; i < listaMusicasEscolhidas.length; i++) {
+            var icon;
+            if (listaMusicasEscolhidas[i].favorito){
+                icon = "<i onclick='removerFavoritoMusicasEscolhidas(" + i +")' class=\"fas fa-star\"></i>";
+            } else {
+                icon = "<i onclick='adicionarFavoritoMusicasEscolhidas(" + i +")' class=\"far fa-star\"></i>";
+            }
             musica +=
-                "<li class='list-group-item'>Nome: " + listaMusicasEscolhidas[i].track.name + "</li>" +
-                "<a href='../html/detalhes.html' onclick='saveMusicasEscolhidasMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>"
+                "<div class='card' >" +
+                //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
+                "<div class='card-body'>" +
+                "<h5 class='card-title'>Nome: " + listaMusicasEscolhidas[i].track.name + "</h5>" +
+                "<div class='card-text'>" +
+                "Artista: " + listaMusicasEscolhidas[i].track.artist.name +
+                "</div>" +
+                "<div>" +
+                //album
+                "</div>" +
+                "</div>" +
+                "<a href='../html/detalhes.html' onclick='saveMusicasEscolhidasMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                "<div id=" + listaMusicasEscolhidas[i].track.mbid + ">" +
+                icon +
+                "</div>" +
+                "</div>";
         }
-        $("#musicasEscolhaList").html("<h5>Musicas</h5><ul class='list-group'>" + musica + "</ul>");
+        $("#musicasEscolhaList").html("<h5>Musicas Escolhidas</h5>" + musica);
     });
 }
 
 function saveTopMusicasPortugalMbid(i) {
     localStorage.setItem("mbid", listaTopMusicasPortugal[i].mbid);
-    console.log(i);
-    console.log(listaTopMusicasPortugal[i].mbid);
 }
 
 function saveMusicasEscolhidasMbid(i) {
     localStorage.setItem("mbid", listaMusicasEscolhidas[i].track.mbid);
+}
+
+function saveMusicasPesquisaMbid(i) {
+    localStorage.setItem("mbid", listaMusicasPesquisa[i].mbid);
+}
+
+function adicionarMusicasPesqeuisa(i) {
+    var id = listaMusicasPesquisa[i].mbid;
+    localStorage.setItem(id, id);
+    listaMusicasPesquisa[i].favorito = true;
+    refreshMusicasPesqeuisa(i);
+}
+
+function removerMusicasPesqeuisa(i) {
+    var id = listaMusicasPesquisa[i].mbid;
+    localStorage.removeItem(id);
+    listaMusicasPesquisa[i].favorito = false;
+    refreshMusicasPesqeuisa(i);
+}
+
+function refreshMusicasPesqeuisa(i) {
+    var icon;
+    if (listaMusicasPesquisa[i].favorito){
+        icon = "<i onclick='removerMusicasPesqeuisa("+ i +")' class=\"fas fa-star\"></i>";
+    } else {
+        icon = "<i onclick='adicionarMusicasPesqeuisa("+ i +")' class=\"far fa-star\"></i>";
+    }
+    $("#" + listaMusicasPesquisa[i].mbid).html(icon);
+}
+
+
+function search() {
+    var track = $("#pesquisa").val();
+    $.ajax({
+        url: API_URL + '/2.0/?method=track.search&track=' + track + '&api_key='+  API_KEY + '&format=json'
+    }).done(function (resultados) {
+        listaMusicasPesquisa = resultados.results.trackmatches.track;
+        verificaPesquisaFavoritos();
+        refreshHomepage();
+    });
+}
+
+function verificaPesquisaFavoritos() {
+    for (var i = 0; i < listaMusicasPesquisa.length; i++){
+        var favorito = localStorage.getItem(listaMusicasPesquisa[i].mbid);
+        if (favorito == null){
+            listaMusicasPesquisa[i].favorito = false;
+        } else {
+            listaMusicasPesquisa[i].favorito = true;
+        }
+    }
+}
+
+function refreshHomepage() {
+    var track = $("#pesquisa").val();
+    if (track === ''){
+        mostrarMusicasPesquisa = false;
+    } else {
+        mostrarMusicasPesquisa = true;
+    }
+    if (mostrarMusicasPesquisa){
+        var musica = '';
+        for (var i = 0; i < listaMusicasPesquisa.length; i++) {
+            var icon;
+            if (listaMusicasPesquisa[i].favorito){
+                icon = "<i onclick='removerMusicasPesqeuisa(" + i +")' class=\"fas fa-star\"></i>";
+            } else {
+                icon = "<i onclick='adicionarMusicasPesqeuisa(" + i +")' class=\"far fa-star\"></i>";
+            }
+            musica +=
+                "<div class='card' >" +
+                //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
+                "<div class='card-body'>" +
+                "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
+                "<div class='card-text'>" +
+                //"Artista: " + listaMusicasPesquisa[i].trackmatches.track.artist.name +
+                "</div>" +
+                "<div>" +
+                //album
+                "</div>" +
+                "</div>" +
+                "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                "<div id=" + listaMusicasPesquisa[i].mbid + ">" +
+                icon +
+                "</div>" +
+                "</div>";
+        }
+        $("#musicasPesquisalList").html("<h5>Musicas Pequisa</h5>" + musica);
+        $("#topMusicasPortugalList").empty();
+        $("#musicasEscolhaList").empty();
+    } else {
+        $("#musicasPesquisalList").empty();
+        inicializarHomepage();
+    }
 }
