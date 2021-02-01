@@ -8,19 +8,12 @@
     display: inline-block;
 }
 
-.panel-default {
-    margin: 20px;
+.list-header {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    text-align: center;
 }
-
-.media-left {
-    width: 100px;
-    float: left;
-}
-
-.thumbnail {
-    border: none;
-}
-
 
 /*detalhes*/
 
@@ -29,6 +22,3 @@
 
 
 /*topmusicasportugal*/
-.card{
-
-}

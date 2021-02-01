@@ -133,15 +133,16 @@ function refreshHomepage() {
                 icon = "<i onclick='adicionarMusicasPesqeuisa(" + i +")' class=\"far fa-star\"></i>";
             }
             musica +=
-                "<div class='card' >" +
+                "<div class='card'>" +
                 //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
                 "<div class='card-body'>" +
                 "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
                 "<div class='card-text'>" +
-                //"Artista: " + listaMusicasPesquisa[i].trackmatches.track.artist.name +
+                "Artista: " + listaMusicasPesquisa[i].artist +
                 "</div>" +
                 "<div>" +
-                //album
+                //a api não disponibilizava do album no search
+                "Url: " + listaMusicasPesquisa[i].url +
                 "</div>" +
                 "</div>" +
                 "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +

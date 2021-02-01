@@ -102,7 +102,7 @@ function showTopMusicasPortugal() {
                 "</div>" +
                 "</div>";
         }
-        $("#topMusicasPortugalList").html("<h5>Top musicas portugal</h5>" + musica);
+        $("#topMusicasPortugalList").html("<h5 class='list-header'>Top Músicas Portugal</h5><div class='card-columns'>" + musica + "</div>");
     });
 }
 
@@ -141,7 +141,7 @@ function showMusicasEscolhidas() {
                 icon = "<i onclick='adicionarFavoritoMusicasEscolhidas(" + i +")' class=\"far fa-star\"></i>";
             }
             musica +=
-                "<div class='card' >" +
+                "<div class='card'>" +
                 //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
                 "<div class='card-body'>" +
                 "<h5 class='card-title'>Nome: " + listaMusicasEscolhidas[i].track.name + "</h5>" +
@@ -158,7 +158,7 @@ function showMusicasEscolhidas() {
                 "</div>" +
                 "</div>";
         }
-        $("#musicasEscolhaList").html("<h5>Musicas Escolhidas</h5>" + musica);
+        $("#musicasEscolhaList").html("<h5 class='list-header'>Musicas Escolhidas</h5><div class='card-columns'>" + musica + "</div>");
     });
 }
 
@@ -233,20 +233,21 @@ function refreshHomepage() {
         for (var i = 0; i < listaMusicasPesquisa.length; i++) {
             var icon;
             if (listaMusicasPesquisa[i].favorito){
-                icon = "<i onclick='removerMusicasPesqeuisa(" + i +")' class=\"fas fa-star\"></i>";
+                icon = "<i onclick='removerMusicasPesqeuisa(" + i +")' class='fas fa-star'></i>";
             } else {
-                icon = "<i onclick='adicionarMusicasPesqeuisa(" + i +")' class=\"far fa-star\"></i>";
+                icon = "<i onclick='adicionarMusicasPesqeuisa(" + i +")' class='far fa-star'></i>";
             }
             musica +=
-                "<div class='card' >" +
+                "<div class='card'>" +
                 //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
                 "<div class='card-body'>" +
                 "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
                 "<div class='card-text'>" +
-                //"Artista: " + listaMusicasPesquisa[i].trackmatches.track.artist.name +
+                "Artista: " + listaMusicasPesquisa[i].artist +
                 "</div>" +
                 "<div>" +
-                //album
+                //a api não disponibilizava do album no search
+                "Url: " + listaMusicasPesquisa[i].url +
                 "</div>" +
                 "</div>" +
                 "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
@@ -255,7 +256,7 @@ function refreshHomepage() {
                 "</div>" +
                 "</div>";
         }
-        $("#musicasPesquisalList").html("<h5>Musicas Pequisa</h5>" + musica);
+        $("#musicasPesquisalList").html("<h5>Musicas Pesquisa</h5>" + musica);
         $("#topMusicasPortugalList").empty();
         $("#musicasEscolhaList").empty();
     } else {
