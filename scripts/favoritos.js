@@ -8,6 +8,7 @@ var mostrarMusicasPesquisa = false;
 
 function removerFavorito(i) {
     localStorage.removeItem(musicasFavoritos[i].track.mbid);
+    //splice - remove do array(posicao a remover)
     musicasFavoritos.splice(i, 1);
     refreshFavoritos();
 }
@@ -15,48 +16,45 @@ function removerFavorito(i) {
 function refreshFavoritos() {
     $("#favoritosList").empty();
     showFavoritos();
-    verificaçãodefavoritos();
-
-
+    alertFavoritos();
 }
 
 function inicializarFavoritos() {
-        var listLocalStorage = Object.keys(localStorage);
-        verificaçãodefavoritos();
-        for (var i = 0; i < listLocalStorage.length; i++) {
-            if (listLocalStorage[i] !== 'mbid') {
-                getTrack(listLocalStorage[i]);
-            }
+    //busca todas as key do que esta guardado no loca storage
+    var listLocalStorage = Object.keys(localStorage);
+    alertFavoritos();
+    for (var i = 0; i < listLocalStorage.length; i++) {
+        if (listLocalStorage[i] !== 'mbid') {
+            getTrack(listLocalStorage[i]);
         }
+    }
 }
 
 function showFavoritos() {
-
-        $("#favoritosList").ready(function () {
-            var musica = '';
-
-            for (var i = 0; i < musicasFavoritos.length; i++) {
-                var icon = "<i onclick='removerFavorito(" + i + ")' class=\"fas fa-trash\"></i>";
-                musica +=
-                    "<div class='card' >" +
+    $("#favoritosList").ready(function () {
+        var musica = '';
+        for (var i = 0; i < musicasFavoritos.length; i++) {
+            var icon = "<i onclick='removerFavorito(" + i + ")' class=\"fas fa-trash\"></i>";
+            musica +=
+                "<div class='card' >" +
                     //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
                     "<div class='card-body'>" +
-                    "<h5 class='card-title'>Nome: " + musicasFavoritos[i].track.name + "</h5>" +
-                    "<div class='card-text'>" +
-                    "Artista: " + musicasFavoritos[i].track.artist.name +
-                    "</div>" +
-                    "<div>" +
-                    //album
-                    "</div>" +
+                        "<h5 class='card-title'>Nome: " + musicasFavoritos[i].track.name + "</h5>" +
+                        "<div class='card-text'>" +
+                            "Artista: " + musicasFavoritos[i].track.artist.name +
+                        "</div>" +
+                        "<div>" +
+                            //album
+                        "</div>" +
                     "</div>" +
                     "<a href='../html/detalhes.html' onclick='saveMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
                     "<div id=" + musicasFavoritos[i].track.mbid + ">" +
-                    icon +
+                        icon +
                     "</div>" +
-                    "</div>";
-            }
-            $("#favoritosList").html(musica);
-        });
+                "</div>";
+        }
+        $("#favoritosList").html(musica);
+    });
 }
 
 function saveMbid(i) {
@@ -140,21 +138,21 @@ function refreshHomepage() {
             }
             musica +=
                 "<div class='card'>" +
-                //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
-                "<div class='card-body'>" +
-                "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
-                "<div class='card-text'>" +
-                "Artista: " + listaMusicasPesquisa[i].artist +
-                "</div>" +
-                "<div>" +
-                //a api não disponibilizava do album no search
-                "Url: " + listaMusicasPesquisa[i].url +
-                "</div>" +
-                "</div>" +
-                "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
-                "<div id=" + listaMusicasPesquisa[i].mbid + ">" +
-                icon +
-                "</div>" +
+                    //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
+                    "<div class='card-body'>" +
+                        "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
+                        "<div class='card-text'>" +
+                            "Artista: " + listaMusicasPesquisa[i].artist +
+                        "</div>" +
+                        "<div>" +
+                        //a api não disponibilizava do album no search
+                            "Url: " + listaMusicasPesquisa[i].url +
+                        "</div>" +
+                    "</div>" +
+                    "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                    "<div id=" + listaMusicasPesquisa[i].mbid + ">" +
+                        icon +
+                    "</div>" +
                 "</div>";
         }
         $("#musicasPesquisalList").html("<h5>Musicas Pequisa</h5>" + musica);
@@ -164,14 +162,10 @@ function refreshHomepage() {
         inicializarFavoritos();
     }
 }
-function verificaçãodefavoritos(){
+function alertFavoritos(){
     var listLocalStorage = Object.keys(localStorage);
-    console.log(listLocalStorage);
     if(listLocalStorage.length === 0 || (listLocalStorage.length === 1 && listLocalStorage[0] === "mbid" )){
-
         alert("Não tens nenhuma musica adicionada aos Favoritos!!!");
-        console.log("funca");
     }
-
 }
 

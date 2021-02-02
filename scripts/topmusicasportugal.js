@@ -12,7 +12,7 @@ function getTopMusicasPortugal() {
     }).done(function (resultados) {
         topMusicasPortugal = resultados.tracks.track;
         verificaFavoritos();
-        inicializarTopMusicasPortugal();
+        showTopMusicasPortugal();
     });
 }
 
@@ -51,7 +51,7 @@ function refreshFavorito(i) {
     $("#" + topMusicasPortugal[i].mbid).html(icon);
 }
 
-function inicializarTopMusicasPortugal() {
+function showTopMusicasPortugal() {
     $("#topMusicasPortugalList").ready(function(){
         for (var i = 0; i < topMusicasPortugal.length; i++) {
             var icon;
@@ -81,7 +81,8 @@ function inicializarTopMusicasPortugal() {
         }
     });
 }
-
+//navegar para a pagina dos detalhes
+//guarda o id da musica selecionada
 function saveMbid(i) {
     localStorage.setItem("mbid", topMusicasPortugal[i].mbid);
 }
@@ -90,26 +91,26 @@ function saveMusicasPesquisaMbid(i) {
     localStorage.setItem("mbid", listaMusicasPesquisa[i].mbid);
 }
 
-function adicionarMusicasPesqeuisa(i) {
+function adicionarMusicasPesquisa(i) {
     var id = listaMusicasPesquisa[i].mbid;
     localStorage.setItem(id, id);
     listaMusicasPesquisa[i].favorito = true;
-    refreshMusicasPesqeuisa(i);
+    refreshMusicasPesquisa(i);
 }
 
-function removerMusicasPesqeuisa(i) {
+function removerMusicasPesquisa(i) {
     var id = listaMusicasPesquisa[i].mbid;
     localStorage.removeItem(id);
     listaMusicasPesquisa[i].favorito = false;
-    refreshMusicasPesqeuisa(i);
+    refreshMusicasPesquisa(i);
 }
 
-function refreshMusicasPesqeuisa(i) {
+function refreshMusicasPesquisa(i) {
     var icon;
     if (listaMusicasPesquisa[i].favorito){
-        icon = "<i onclick='removerMusicasPesqeuisa("+ i +")' class=\"fas fa-star\"></i>";
+        icon = "<i onclick='removerMusicasPesquisa("+ i +")' class=\"fas fa-star\"></i>";
     } else {
-        icon = "<i onclick='adicionarMusicasPesqeuisa("+ i +")' class=\"far fa-star\"></i>";
+        icon = "<i onclick='adicionarMusicasPesquisa("+ i +")' class=\"far fa-star\"></i>";
     }
     $("#" + listaMusicasPesquisa[i].mbid).html(icon);
 }
@@ -149,27 +150,27 @@ function refreshHomepage() {
         for (var i = 0; i < listaMusicasPesquisa.length; i++) {
             var icon;
             if (listaMusicasPesquisa[i].favorito){
-                icon = "<i onclick='removerMusicasPesqeuisa(" + i +")' class=\"fas fa-star\"></i>";
+                icon = "<i onclick='removerMusicasPesquisa(" + i +")' class=\"fas fa-star\"></i>";
             } else {
-                icon = "<i onclick='adicionarMusicasPesqeuisa(" + i +")' class=\"far fa-star\"></i>";
+                icon = "<i onclick='adicionarMusicasPesquisa(" + i +")' class=\"far fa-star\"></i>";
             }
             musica +=
                 "<div class='card'>" +
-                //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
-                "<div class='card-body'>" +
-                "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
-                "<div class='card-text'>" +
-                "Artista: " + listaMusicasPesquisa[i].artist +
-                "</div>" +
-                "<div>" +
-                //a api não disponibilizava do album no search
-                "Url: " + listaMusicasPesquisa[i].url +
-                "</div>" +
-                "</div>" +
-                "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
-                "<div id=" + listaMusicasPesquisa[i].mbid + ">" +
-                icon +
-                "</div>" +
+                    //"<img class='card-img-top' src=" + musicasFavoritos[i].image[0]['#text'] + ">" +
+                    "<div class='card-body'>" +
+                        "<h5 class='card-title'>Nome: " + listaMusicasPesquisa[i].name + "</h5>" +
+                        "<div class='card-text'>" +
+                            "Artista: " + listaMusicasPesquisa[i].artist +
+                        "</div>" +
+                        "<div>" +
+                        //a api não disponibilizava do album no search
+                            "Url: " + listaMusicasPesquisa[i].url +
+                        "</div>" +
+                    "</div>" +
+                    "<a href='../html/detalhes.html' onclick='saveMusicasPesquisaMbid(" + i + ")' class='btn btn-primary add-fav'>Ver Detalhes</a>" +
+                    "<div id=" + listaMusicasPesquisa[i].mbid + ">" +
+                        icon +
+                    "</div>" +
                 "</div>";
         }
         $("#musicasPesquisalList").html("<h5>Musicas Pequisa</h5>" + musica);

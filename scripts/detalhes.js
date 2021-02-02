@@ -1,13 +1,15 @@
 "use strict";
 const API_KEY = "5ba1f5ca210bd7e2abd6f9476393c155";
 const API_URL = "http://ws.audioscrobbler.com";
-
+//cada pedido À api é guardado na sua variavel
 var detalhesMusica;
 var detalhesAlbum;
 var detalhesArtista;
 
+//get musica da api
 function getDetalhesMusica() {
     $.ajax({
+        //localStorage.getItem("mbid") - busca o mbid da musica selecionada
         url: API_URL + '/2.0/?method=track.getInfo&api_key=' + API_KEY + '&mbid=' + localStorage.getItem("mbid") + '&format=json'
     }).done(function (resultados) {
         detalhesMusica = resultados;
@@ -15,6 +17,7 @@ function getDetalhesMusica() {
     });
 }
 
+//get album da api
 function getDetalhesAlbum() {
     $.ajax({
         url: API_URL + '/2.0/?method=album.getInfo&api_key=' + API_KEY + '&mbid=' + detalhesMusica.track.album.mbid + '&format=json'
@@ -33,6 +36,7 @@ function getDetalhesArtista() {
     });
 }
 
+//jquery que renderiza no ecrã
 function showDetalhesMusica() {
     $( "#artist-name" ).text(detalhesMusica.track.artist.name);
     $( "#track-name" ).text(detalhesMusica.track.name);
