@@ -40,6 +40,7 @@ function getTrack(key) {
     }).done(function (resultados) {
         //push - adiciona um elemento ao final do array
         listaMusicasEscolhidas.push(resultados);
+        verificaFavoritosMusicasEscolhidas();
         showMusicasEscolhidas();
     });
 }
@@ -118,6 +119,17 @@ function showTopMusicasPortugal() {
 //guarda o id da musica selecionada para ver os detalhes
 function saveTopMusicasPortugalMbid(i) {
     localStorage.setItem("mbid", listaTopMusicasPortugal[i].mbid);
+}
+
+function verificaFavoritosMusicasEscolhidas() {
+    for (var i = 0; i < listaMusicasEscolhidas.length; i++){
+        var favorito = localStorage.getItem(listaMusicasEscolhidas[i].track.mbid);
+        if (favorito == null){
+            listaMusicasEscolhidas[i].favorito = false;
+        } else {
+            listaMusicasEscolhidas[i].favorito = true;
+        }
+    }
 }
 
 function adicionarFavoritoMusicasEscolhidas(i) {

@@ -165,7 +165,7 @@ function refreshHomepage() {
 function alertFavoritos(){
     var listLocalStorage = Object.keys(localStorage);
     if(listLocalStorage.length === 0 || (listLocalStorage.length === 1 && listLocalStorage[0] === "mbid" )){
-        alert("Não tens nenhuma musica adicionada aos Favoritos!!!");
+        alert("Não tem nenhum favorito adicionado de momento!");
     }
 }
 
