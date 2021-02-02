@@ -20,7 +20,7 @@ function refreshFavoritos() {
 }
 
 function inicializarFavoritos() {
-    //busca todas as key do que esta guardado no loca storage
+    //busca todas as key do que esta guardado no localStorage
     var listLocalStorage = Object.keys(localStorage);
     alertFavoritos();
     for (var i = 0; i < listLocalStorage.length; i++) {

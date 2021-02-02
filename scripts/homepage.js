@@ -14,7 +14,7 @@ function inicializarHomepage() {
     inicializarMusicasEscolhidas();
 }
 
-//musicas escolhida da api
+//musicas escolhidas da api
 function inicializarMusicasEscolhidas() {
     var musicas = ["1d2a50be-823f-4143-95e2-b84182487d49", "e96855bb-5c68-4349-92bb-7cbc3035a5e3", "93289015-cf8a-4dde-b309-43ccf3803582", "f980fc14-e29b-481d-ad3a-5ed9b4ab6340", "6cbbb97d-2180-4ba9-97a8-6158b6332bb4"];
     for(var i = 0; i < musicas.length; i++){
@@ -22,7 +22,7 @@ function inicializarMusicasEscolhidas() {
     }
 }
 
-//top de portugal
+//get top de portugal
 function getTopMusicasPortugal() {
     $.ajax({
         url: API_URL + '/2.0/?method=geo.gettoptracks&country=portugal&api_key=' + API_KEY + '&format=json&limit=5'
@@ -33,7 +33,7 @@ function getTopMusicasPortugal() {
     });
 }
 
-//busca musicas escolhidas
+//get musicas escolhidas
 function getTrack(key) {
     $.ajax({
         url: API_URL + '/2.0/?method=track.getInfo&api_key=' + API_KEY + '&mbid=' + key + '&format=json'
@@ -58,7 +58,6 @@ function verificaFavoritosTopMusicasPortugal() {
 
 function adicionarFavoritoTopMusicasPortugal(i) {
     var id = listaTopMusicasPortugal[i].mbid;
-    //(chave, valor)
     localStorage.setItem(id, id);
     listaTopMusicasPortugal[i].favorito = true;
     refreshFavoritoTopMusicasPortugal(i);
@@ -82,7 +81,6 @@ function refreshFavoritoTopMusicasPortugal(i) {
     $("#" + listaTopMusicasPortugal[i].mbid).html(icon);
 }
 
-//.ready só corre quando a div com o id
 function showTopMusicasPortugal() {
     $("#topMusicasPortugalList").ready(function(){
         var musica = '';
